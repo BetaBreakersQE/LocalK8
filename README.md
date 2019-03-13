@@ -14,7 +14,6 @@ The rest will be configured inside your machine via terminal.
 ## Pre-Requisite: Installing VirtualBox
 Make sure to have an updated version of [VirtualBox](https://www.virtualbox.org/wiki/Downloads) in order to install Minikube
 ## Installing and Starting Minikube
-First go ahead and retrieve Minikube, which is a tool that will allow you to run Kubernetes locally.
 
 Use the following command to install Minikube
 
@@ -63,10 +62,10 @@ kubectl version
 
 ## Installing Docker & Building the Dockerfile
 
-Go ahead and have [Docker](https://www.docker.com/get-started) downloaded on your system
+Setup and have [Docker](https://www.docker.com/get-started) downloaded on your system
 OSX & Unix: 
 
-Go ahead and verify that it is working:
+Verify that it is working:
 
 ```bash
 docker version
@@ -77,7 +76,7 @@ Also run this command and make sure it does NOT show any errors:
 ```bash
 eval $(minikube docker-env)
 ```
-Go ahead make a Dockerfile if you do not have one and put all of the necessary parameters needed to build the docker image. You will need to go into the directory that contains the Dockerfile
+Now make a Dockerfile if you do not have one and put all of the necessary parameters needed to build the docker image. You will need to go into the directory that contains the Dockerfile
 
 ```bash
 docker build -t <your_docker_username>/<name_of_jenkins_image> .
@@ -131,7 +130,7 @@ It should display:
 deployment "jenkins" created
 ```
 
-Go ahead and verify using kubectl:
+Now verify jenkins is there using kubectl:
 
 ```bash
 kubectl describe pod | grep jenkins
@@ -155,7 +154,7 @@ spec:
     app: jenkins
 ```
 
-Now go ahead and run it inside the Kubernetes container:
+Run it inside the Kubernetes container:
 
 ```bash
 kubectl create -f jenkins-service.yaml
@@ -167,7 +166,7 @@ It should return:
 service "jenkins" created
 ```
 
-Now go ahead and open the dashboard and make sure everything is running properly.
+Open the dashboard and make sure everything is running properly.
 
 ```bash
 minikube dashboard
@@ -175,7 +174,7 @@ minikube dashboard
 
 ## Starting Jenkins
 
-Once everything is working, go ahead and start Jenkins
+Once everything is working, start Jenkins
 
 ```bash
 kubectl get service
@@ -213,13 +212,13 @@ It will output your password and the username will be admin.
 
 ## Configuring CI/CD & Pipeline
 
-Go to Manage Jenkins > Manage Plugins
+Navigate to Manage Jenkins > Manage Plugins
 
 Install Configuration as Code and Pipeline (if not present from initial installation). 
 
 Feel free to grab whatever plugins you need under Manage Plugin
 
-Go and create a new item and create a new pipeline. Name your pipeline, then go to Configure. Then go down to the pipeline script from SCM option. Enter the link to your github repo, and under credentials enter your github credentials. For Script Path parameter it should be 'Jenkinsfile'
+Create a new item and create a new pipeline. Name your pipeline, then go to Configure. Then go down to the pipeline script from SCM option. Enter the link to your github repo, and under credentials enter your github credentials. For Script Path parameter it should be 'Jenkinsfile'
 
 Create a Jenkinsfile inside the repo if you haven't. Now save and run it.
 
@@ -250,7 +249,7 @@ pipeline {
 ```
 ## Slave 
 
-Go to manage Jenkins > manage node > new node. Then provide the name of the node and categorize it as a permananent agent.
+Navigate to manage Jenkins > manage node > new node. Then provide the name of the node and categorize it as a permananent agent.
 
 Now for the root directory, specify the directory that you want to work in. Then launch the node via ssh. 
 

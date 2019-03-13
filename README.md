@@ -260,5 +260,25 @@ And the credentials should be the user to the hostname and the sudo password. Th
 
 In the slave configuration, go and specify the IP address that the Hamachi server provides. (Pretty much ssh into there).
 
+### Running in Virtual Machine
 
+Find the IP address of your Virtual Machine.
 
+```bash
+ifconfig -a
+```
+To test it, ping it:
+
+```bash
+ping <ipaddress>
+```
+
+Then ssh into VM
+
+```bash
+ssh <ipaddress>
+```
+
+## Amazon Web Services
+
+In progress...

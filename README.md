@@ -3,7 +3,14 @@
 Using Jenkins configuration as code via Kubernetes. It will allow you to run the same particular instance of Jenkins.
 
 Follow these steps correctly and Jenkins will be launched on your system
+## Tech-Stack Used
+[VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+[Minikube](https://kubernetes.io/docs/setup/minikube/)
+[Docker](https://docs.docker.com/docker-for-mac/install/)
 
+The rest will be configured inside your machine via terminal.
+
+# Setup
 ## Pre-Requisite: Installing VirtualBox
 Make sure to have an updated version of [VirtualBox](https://www.virtualbox.org/wiki/Downloads) in order to install Minikube
 ## Installing and Starting Minikube
@@ -208,11 +215,9 @@ It will output your password and the username will be admin.
 
 Go to Manage Jenkins > Manage Plugins
 
-Install Configuration as Code, Pipeline (if not present from initial installation), and Cucumber. 
+Install Configuration as Code and Pipeline (if not present from initial installation). 
 
-Feel free to grab whatever resource you need.
-
-## How to use Cucumber Plugin
+Feel free to grab whatever plugins you need under Manage Plugin
 
 Go and create a new item and create a new pipeline. Name your pipeline, then go to Configure. Then go down to the pipeline script from SCM option. Enter the link to your github repo, and under credentials enter your github credentials. For Script Path parameter it should be 'Jenkinsfile'
 

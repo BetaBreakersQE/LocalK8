@@ -7,7 +7,7 @@ Follow these steps correctly and Jenkins will be launched on your system
 [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 [Minikube](https://kubernetes.io/docs/setup/minikube/)
 [Docker](https://docs.docker.com/docker-for-mac/install/)
-
+[Hamachi](https://www.vpn.net/) is optional if you are not on the same LAN. 
 The rest will be configured inside your machine via terminal.
 
 # Setup
@@ -258,10 +258,6 @@ The option 'launch agent agents via ssh' should be selected.
 The host is the IP address to the network. 
 And the credentials should be the user to the hostname and the sudo password. The host key should be 'non verifying verification strategy'.
  Also keep the slave node online as much as possible.
-
-
-### Optional: If you are not using the same network or LAN, go ahead and use a VPN. 
-### Installing [Hamachi](https://www.vpn.net/) as VPN and connect your devices.
 
 In the slave configuration, go and specify the IP address that the Hamachi server provides. (Pretty much ssh into there).
 

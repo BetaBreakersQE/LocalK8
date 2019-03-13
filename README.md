@@ -56,4 +56,209 @@ kubectl version
 
 ##Installing Docker & Building the Dockerfile
 
+Go ahead and have [Docker](https://www.docker.com/get-started) downloaded on your system
+OSX & Unix: 
+
+Go ahead and verify that it is working:
+
+```bash
+docker version
+```
+
+Also run this command and make sure it does NOT show any errors:
+
+```bash
+eval $(minikube docker-env)
+```
+Go ahead make a Dockerfile if you do not have one and put all of the necessary parameters needed to build the docker image. You will need to go into the directory that contains the Dockerfile
+
+```bash
+docker build -t <your_docker_username>/<name_of_jenkins_image> .
+```
+##Configuring and building YAML files
+Now build a deployment YAML file for the configuration parameters 
+Here is what mine looks like.
+
+```bash
+vi jenkins-deployment.yaml
+```
+```yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jenkins
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      containers:
+        - name: jenkins
+          image: ybushnev/my-jenkins-image:1.0
+          env:
+            - name: JAVA_OPTS
+              value: -Djenkins.install.runSetupWizard=false
+          ports:
+            - name: http-port
+              containerPort: 8080
+            - name: jnlp-port
+              containerPort: 50000
+          volumeMounts:
+            - name: jenkins-home
+              mountPath: /var/jenkins_home
+      volumes:
+        - name: jenkins-home
+          emptyDir: {}
+```
+Next we will apply the yaml file.
+
+```bash
+kubectl apply -f jenkins-deployment.yaml
+```
+
+It should display:
+
+```bash
+deployment "jenkins" created
+```
+
+Go ahead and verify using kubectl:
+
+```bash
+kubectl describe pod | grep jenkins
+```
+
+Now create the service yaml file where we need to specify the ports and necessary connection needed. Jenkins should maintain connection to the pod while the IP changes.
+
+Here is an example of my jenkins-service.yaml
+
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: jenkins
+```
+
+Now go ahead and run it inside the Kubernetes container:
+
+```bash
+kubectl create -f jenkins-service.yaml
+```
+
+It should return:
+
+```bash
+service "jenkins" created
+```
+
+Now go ahead and open the dashboard and make sure everything is running properly.
+
+```bash
+minikube dashboard
+```
+
+##Starting Jenkins
+
+Once everything is working, go ahead and start Jenkins
+
+```bash
+kubectl get service
+```
+
+Now go over to the output and look for the line that says
+
+```bash
+<jenkins> NodePort <ip_address> 8080:<port_number>/TCP
+```
+
+Also get the minikube ip
+
+```bash
+minikube ip
+```
+
+Now go to your browser and type in http://minikubeip:port_number from above
+
+That will be your Jenkins instance
+
+##Password
+We will have to get the initial admin password in a different manner. Run this command:
+
+```bash
+kubectl get secret my-release-jenkins -o yaml
+```
+Go over and find the value of jenkins-admin-password. And then do:
+
+```bash
+#include the ' '
+echo '<jenkins-admin-password_value>' | base64 --decode
+```
+It will output your password and the username will be admin.
+
+##Configuring CI/CD & Pipeline
+
+Go to Manage Jenkins > Manage Plugins
+
+Install Configuration as Code, Pipeline (if not present from initial installation), and Cucumber. 
+
+Feel free to grab whatever resource you need.
+
+##How to use Cucumber Plugin
+
+Go and create a new item and create a new pipeline. Name your pipeline, then go to Configure. Then go down to the pipeline script from SCM option. Enter the link to your github repo, and under credentials enter your github credentials. For Script Path parameter it should be 'Jenkinsfile'
+
+Create a Jenkinsfile inside the repo if you haven't. Now save and run it.
+
+My default Jenkinsfile is in the repo.
+
+```bash
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
+```
+##Slave 
+
+Go to manage Jenkins > manage node > new node. Then provide the name of the node and categorize it as a permananent agent.
+
+Now for the root directory, specify the directory that you want to work in. Then launch the node via ssh. 
+
+The option 'launch agent agents via ssh' should be selected. 
+The host is the IP address to the network. 
+And the credentials should be the user to the hostname and the sudo password. The host key should be 'non verifying verification strategy'.
+ Also keep the slave node online as much as possible.
+
+
+###Optional: If you are not using the same network or LAN, go ahead and use a VPN. 
+###Installing [Hamachi](https://www.vpn.net/) as VPN and connect your devices.
+
+In the slave configuration, go and specify the IP address that the Hamachi server provides. (Pretty much ssh into there).
+
+
 

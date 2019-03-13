@@ -4,9 +4,9 @@ Using Jenkins configuration as code via Kubernetes. It will allow you to run the
 
 Follow these steps correctly and Jenkins will be launched on your system
 
-##Pre-Requisite: Installing VirtualBox
+## Pre-Requisite: Installing VirtualBox
 Make sure to have an updated version of [VirtualBox](https://www.virtualbox.org/wiki/Downloads) in order to install Minikube
-##Installing and Starting Minikube
+## Installing and Starting Minikube
 First go ahead and retrieve Minikube, which is a tool that will allow you to run Kubernetes locally.
 
 Use the following command to install Minikube
@@ -40,7 +40,7 @@ It should say something like
 ```bash
  kubectl: Correctly configured: Pointing to minikube-vm at 192.169.99.101
 ```
-##Installing and Starting Kubernetes
+## Installing and Starting Kubernetes
 
 You will need to download kubernetes and it will be configured to minikube.
 
@@ -54,7 +54,7 @@ To ensure that kubernetes is installed correctly:
 kubectl version
 ```
 
-##Installing Docker & Building the Dockerfile
+## Installing Docker & Building the Dockerfile
 
 Go ahead and have [Docker](https://www.docker.com/get-started) downloaded on your system
 OSX & Unix: 
@@ -75,7 +75,7 @@ Go ahead make a Dockerfile if you do not have one and put all of the necessary p
 ```bash
 docker build -t <your_docker_username>/<name_of_jenkins_image> .
 ```
-##Configuring and building YAML files
+## Configuring and building YAML files
 Now build a deployment YAML file for the configuration parameters 
 Here is what mine looks like.
 
@@ -166,7 +166,7 @@ Now go ahead and open the dashboard and make sure everything is running properly
 minikube dashboard
 ```
 
-##Starting Jenkins
+## Starting Jenkins
 
 Once everything is working, go ahead and start Jenkins
 
@@ -190,7 +190,7 @@ Now go to your browser and type in http://minikubeip:port_number from above
 
 That will be your Jenkins instance
 
-##Password
+## Password
 We will have to get the initial admin password in a different manner. Run this command:
 
 ```bash
@@ -204,7 +204,7 @@ echo '<jenkins-admin-password_value>' | base64 --decode
 ```
 It will output your password and the username will be admin.
 
-##Configuring CI/CD & Pipeline
+## Configuring CI/CD & Pipeline
 
 Go to Manage Jenkins > Manage Plugins
 
@@ -212,7 +212,7 @@ Install Configuration as Code, Pipeline (if not present from initial installatio
 
 Feel free to grab whatever resource you need.
 
-##How to use Cucumber Plugin
+## How to use Cucumber Plugin
 
 Go and create a new item and create a new pipeline. Name your pipeline, then go to Configure. Then go down to the pipeline script from SCM option. Enter the link to your github repo, and under credentials enter your github credentials. For Script Path parameter it should be 'Jenkinsfile'
 
@@ -243,7 +243,7 @@ pipeline {
     }
 }
 ```
-##Slave 
+## Slave 
 
 Go to manage Jenkins > manage node > new node. Then provide the name of the node and categorize it as a permananent agent.
 
@@ -255,8 +255,8 @@ And the credentials should be the user to the hostname and the sudo password. Th
  Also keep the slave node online as much as possible.
 
 
-###Optional: If you are not using the same network or LAN, go ahead and use a VPN. 
-###Installing [Hamachi](https://www.vpn.net/) as VPN and connect your devices.
+### Optional: If you are not using the same network or LAN, go ahead and use a VPN. 
+### Installing [Hamachi](https://www.vpn.net/) as VPN and connect your devices.
 
 In the slave configuration, go and specify the IP address that the Hamachi server provides. (Pretty much ssh into there).
 

@@ -76,11 +76,6 @@ Also run this command and make sure it does NOT show any errors:
 ```bash
 eval $(minikube docker-env)
 ```
-Now make a Dockerfile if you do not have one and put all of the necessary parameters needed to build the docker image. You will need to go into the directory that contains the Dockerfile
-
-```bash
-docker build -t <your_docker_username>/<name_of_jenkins_image> .
-```
 ## Configuring and building YAML files
 Now build a deployment YAML file for the configuration parameters 
 Here is what mine looks like.
